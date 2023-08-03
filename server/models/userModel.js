@@ -39,10 +39,18 @@ const userSchema = new mongoose.Schema({
       required: true
     }
   }],
-  refreshToken: {
-    type: String,
-    required: false
-  }
+  groups: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group'
+  }],
+  membership: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group'
+  }],
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 })
 
 module.exports = mongoose.model('User', userSchema)

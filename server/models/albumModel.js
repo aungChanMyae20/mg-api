@@ -5,6 +5,10 @@ const albumSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  albumTag: {
+    type: String,
+    required: true
+  },
   seasonID: {
     type: String,
     required: true
@@ -12,7 +16,17 @@ const albumSchema = new mongoose.Schema({
   number: {
     type: Number,
     required: true
-  }
+  },
+  rewards: {
+    type: String,
+    required: false
+  },
+  cards: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Card'
+    }
+  ]
 })
 
 module.exports = mongoose.model('Album', albumSchema)

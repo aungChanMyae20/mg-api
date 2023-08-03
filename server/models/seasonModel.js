@@ -8,6 +8,10 @@ const seasonSchema = new mongoose.Schema({
   endDate: {
     type: String,
     required: true,
+  },
+  eventTag: {
+    type: String,
+    required: true
   }
 })
 

@@ -12,22 +12,6 @@ const userController = {
   },
   addNewUser: async (req, res) => {
     try {
-      // const { cards, ...rest } = req.body
-
-      // const populatedUserCardsData = await Promise.all(
-      //   cards.map(async (object) => {
-      //     const card = await Card.findById(object._id)
-      //     return {
-      //       _id: card._id,
-      //       count: object.count
-      //     }
-      //   })
-      // )
-
-      // const newUser = new UserModel({
-      //   ...rest,
-      //   cards: populatedUserCardsData
-      // })
 
       const { name, pin, role = 'user', ...rest } = req.body;
 
@@ -35,13 +19,15 @@ const userController = {
         name,
         pin,
         role,
-        refreshToken: "12345678",
         ...rest
       })
-      // const savedData = await newUser.save()
-      await newUser.save()
+      const savedUser = await newUser.save()
 
-      res.status(201).json({ message: 'User created', token: '12345678' })
+      res.status(201).json({ 
+        success: true,
+        message: 'User created',
+        data: savedUser
+      })
     } catch (error) {
       if (error.code === 11000 && error.keyPattern && error.keyPattern.name) {
         return res.status(400).json({ error: 'Name already exists' })

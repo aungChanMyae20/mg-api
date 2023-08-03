@@ -5,10 +5,6 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  albumID: {
-    type: String,
-    required: true
-  },
   number: {
     type: Number,
     required: true
