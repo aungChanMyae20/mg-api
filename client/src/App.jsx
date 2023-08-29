@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRoutes } from 'react-router-dom'
 import routes from './routes/routes'
 import styled from 'styled-components'
-import { notifyError } from './helpers/notifications'
 
 const Section = styled.section`
   display: grid;

@@ -4,8 +4,13 @@ const getAllSeasons = () => {
   return authAxiosInstance.get('/season/all')
 }
 
+const saveEvent = (values) => {
+  return axiosInstance.post('/season/event', values)
+}
+
 const EventServices = {
-  getAllSeasons
+  getAllSeasons,
+  saveEvent
 }
 
 export default EventServices

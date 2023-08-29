@@ -3,6 +3,7 @@ const router = express.Router()
 const groupController = require('../controllers/groupController')
 
 router.get('/groups', groupController.getAllGroups)
+router.get('/user-groups', groupController.getAllByUser)
 router.post('/group', groupController.createGroup)
 router.get('/group/:groupId', groupController.getOne)
 router.put('/group/:groupId', groupController.updateGroup)

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Formik, Form } from 'formik'
-import bcrypt from 'bcryptjs'
 
 import { loginSchema } from '../validationSchemas/loginSchema'
 
@@ -20,21 +19,35 @@ const LoginForm = ({
         validationSchema={loginSchema}
         onSubmit={onLogin}
       >
-        <React.Suspense fallback={<div>Loading...</div>}>
-          <Form>
-            <div>
+        {({
+          errors,
+        }) => (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Form>
               <div>
-                <Input label="User name" type="text" name="name" />
+                <div>
+                  <Input 
+                    label="User name" 
+                    type="text" 
+                    name="name" 
+                    hasError={errors.name}
+                  />
+                </div>
+                <div>
+                  <Input 
+                    label="Pin" 
+                    type="password" 
+                    name="pin" 
+                    hasError={errors.pin}
+                  />
+                </div>
+                <div>
+                  <button type="submit">Login</button>
+                </div>
               </div>
-              <div>
-                <Input label="Pin" type="password" name="pin" />
-              </div>
-              <div>
-                <button type="submit">Login</button>
-              </div>
-            </div>
-          </Form>
-        </React.Suspense>
+            </Form>
+          </React.Suspense>
+        )}
       </Formik>
     </div>
   )

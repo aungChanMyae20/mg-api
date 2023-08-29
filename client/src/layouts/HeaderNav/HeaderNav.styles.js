@@ -16,7 +16,7 @@ export const NavPlaceholder = styled.nav`
   border-bottom-left-radius: 8px;
   display: flex;
   justify-content: end;
-  z-index: 9999;
+  z-index: 3;
 `
 
 export const LogoutBtn = styled.button`

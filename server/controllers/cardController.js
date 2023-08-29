@@ -1,4 +1,8 @@
+const AlbumModel = require('../models/albumModel')
+const SeasonModel = require('../models/seasonModel')
 const CardModel = require('../models/cardModel')
+const UserModel = require('../models/userModel')
+const { serverError } = require('../variables')
 
 const cardController = {
   getAllData: async (req, res) => {
@@ -11,7 +15,7 @@ const cardController = {
       })
     } catch (error) {
       console.error('Error fetching cards:', error)
-      res.status(500).json({ message: 'Server error'})
+      res.status(500).json(serverError)
     }
   },
   addNewCard: async (req, res) => {
@@ -27,7 +31,7 @@ const cardController = {
       console.error('Error adding new card:', error)
       res.status(500).json({ message: 'Server error' })
     }
-  }
+  },
 }
 
 module.exports = cardController

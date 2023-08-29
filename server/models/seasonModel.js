@@ -1,4 +1,8 @@
 const mongoose = require('mongoose')
+const dayjs = require('dayjs')
+var utc = require('dayjs/plugin/utc')
+
+dayjs.extend(utc)
 
 const seasonSchema = new mongoose.Schema({
   name: {
@@ -6,13 +10,22 @@ const seasonSchema = new mongoose.Schema({
     required: true,
   },
   endDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   eventTag: {
     type: String,
     required: true
   }
+}, { versionKey: false })
+
+seasonSchema.pre('save', function (next) {
+  if (this.endDate) {
+    this.endDate = dayjs(this.endDate).utc().toDate()
+  }
+  next()
 })
 
-module.exports = mongoose.model('Season', seasonSchema)
+const SeasonModel = mongoose.model('Season', seasonSchema)
+
+module.exports = SeasonModel

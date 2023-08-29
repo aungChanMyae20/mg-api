@@ -36,8 +36,6 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
     const refreshToken = decryptUserInfo('refreshToken')
-    console.log('refreshtoken', refreshToken)
-    console.log('error error', error)
     if (
       error.response &&
       error.response.status === 401 &&

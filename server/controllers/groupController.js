@@ -1,5 +1,7 @@
 const GroupModel = require('../models/groupModel')
 const UserModel = require('../models/userModel')
+const WishlistModel = require('../models/wishlistModel')
+const { serverError } = require('../variables')
 
 const groupController = {
   getAllGroups: async (req, res) => {
@@ -16,17 +18,129 @@ const groupController = {
       })
     } catch (error) {
       console.error('Error fetching groups:', error)
-      res.status(500).json({
-        success: false,
-        message: 'Server error'
+      res.status(500).json(serverError)
+    }
+  },
+  getAllByUser: async (req, res) => {
+    try {
+      const userId = req.user
+      const user = await UserModel.findById(userId)
+        .select("groups membership friends")
+      
+      if (!user) {
+        res.status(404).json({
+          success: false,
+          message: "User not found"
+        })
+      }
+      
+      const userObj = user.toObject()
+      const { groups: groupIds, membership: asMember, friends } = userObj
+
+      const membershipIds = asMember.filter((memberGroup) => !groupIds.some((group) => group.toString() === memberGroup.toString()))
+
+      const groups = []
+      const membership = []
+
+      const groupsPromise = groupIds.map(async (id) => {
+        const group = await GroupModel.findById(id)
+          .populate([
+            {
+              path: "owner",
+              select: "_id name link"
+            },
+            {
+              path: "members",
+              select: "_id name link"
+            }
+          ])
+        
+        groups.push(group)
       })
+
+      const membershipPromise = membershipIds.map(async id => {
+        const membershipGroup = await GroupModel.findById(id)
+          .populate([
+            {
+              path: "owner",
+              select: "_id name link"
+            },
+            {
+              path: "members",
+              select: "_id name link"
+            }
+          ])
+        
+        membership.push(membershipGroup)
+      })
+
+      await Promise.all(groupsPromise)
+      await Promise.all(membershipPromise)
+
+      const friendsGroups = await GroupModel.find({
+        members: { $in: friends }
+      })
+      .populate([{
+          path: 'owner',
+          select: "_id name link"
+        }, 
+        { 
+          path: "members",
+          match: { _id: { $in: friends }},
+          select: "_id name link",
+        }
+      ])
+
+      res.json({
+        success: true,
+        data: {
+          groups,
+          membership,
+          friends: friendsGroups
+        }
+      })
+    } catch (error) {
+      console.error('Error getting user\'s groups')
+      res.status(500).json(serverError)
     }
   },
   getOne: async (req, res) => {
     try {
       const { groupId } = req.params
+      const { userId } = req.user
 
       const group = await GroupModel.findById(groupId)
+        .populate([
+          {
+            path: "owner",
+            select: "_id name link"
+          },
+          {
+            path: "members",
+            select: "_id name link"
+          }
+        ])
+        .exec()
+        .then(async (userGroup) => {
+          const userGroupObj = userGroup.toObject()
+          const { members } = userGroupObj
+          const membersWishlist = []
+          const membersWishlistPromises = await members.map(async (member) => {
+            const wishlist = await WishlistModel.findOne({ userID: member._id })
+              .populate("cards")
+            membersWishlist.push({
+              ...member,
+              wishlist
+            })
+          }) 
+
+          await Promise.all(membersWishlistPromises)
+
+          return {
+            ...userGroupObj,
+            members: membersWishlist
+          }
+        })
       if (!group) {
         res.status(404).json({
           success: false,

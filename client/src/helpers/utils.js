@@ -22,5 +22,4 @@ export const revokeUserInfo = () => {
   localStorage.removeItem('auth')
   localStorage.removeItem('refreshToken')
   window.location.href = '/login'
-  // return <Navigate to='/login' />
 }

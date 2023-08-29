@@ -16,6 +16,6 @@ const groupSchema = new mongoose.Schema({
       ref: 'User'
     }
   ]
-})
+}, { versionKey: false })
 
 module.exports = mongoose.model('Group', groupSchema)

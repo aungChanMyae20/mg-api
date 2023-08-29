@@ -17,16 +17,14 @@ const albumSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  rewards: {
-    type: String,
-    required: false
-  },
   cards: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Card'
     }
   ]
-})
+}, { versionKey: false })
 
-module.exports = mongoose.model('Album', albumSchema)
+const AlbumModel = mongoose.model('Album', albumSchema)
+
+module.exports = AlbumModel

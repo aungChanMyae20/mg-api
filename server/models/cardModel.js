@@ -17,6 +17,8 @@ const cardSchema = new mongoose.Schema({
     type: Boolean,
     required: true
   }
-})
+}, { versionKey: false })
 
-module.exports = mongoose.model('Card', cardSchema)
+const CardModel = mongoose.model('Card', cardSchema)
+
+module.exports = CardModel

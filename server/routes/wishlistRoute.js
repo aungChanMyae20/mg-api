@@ -4,8 +4,8 @@ const wishlistController = require('../controllers/wishlistController')
 
 router.get('/all-wishlist', wishlistController.getAllData)
 router.post('/wishlist', wishlistController.addNewWishlist)
-router.post('/wishlist/:userId', wishlistController.addToWishlist)
-router.patch('/wishlist/:wishlistId', wishlistController.removeFromWishlist)
-router.delete('/wishlist/:wishlistId', wishlistController.removeWishlist)
+router.post('/wishlist/:cardId', wishlistController.addToWishlist)
+// router.patch('/wishlist/:wishlistId', wishlistController.removeFromWishlist)
+// router.delete('/wishlist/:wishlistId', wishlistController.removeWishlist)
 
 module.exports = router

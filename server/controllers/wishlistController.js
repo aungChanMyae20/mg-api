@@ -30,8 +30,8 @@ const wishlistController = {
   },
   addToWishlist: async (req, res) => {
     try {
-      const { userId } = req.params
-      const { cardId } = req.body
+      const { userId } = req.user
+      const { cardId } = req.params
       const userWishlist = await WishlistModel.findOne({ userID: userId })
       if (!userWishlist) {
         const newWishlist = new WishlistModel({

@@ -14,20 +14,17 @@ const Card = ({title, link, children}) => {
     </>
   }
 
-  return <>
-    {
-      link ?
-      <CardDiv>
-        <NavLink to={link}>
-          <Content />
-        </NavLink>
-      </CardDiv>
-      :
-      <CardDiv>
-        <Content />
-      </CardDiv>
-    }
-  </>
+  return (
+    <CardDiv>
+      {
+        title && 
+          link ? <NavLink to={link}><Title>{title}</Title></NavLink>
+          :
+          <Title>{title}</Title>
+      }
+      {children}
+    </CardDiv>
+  )
 }
 
 export default Card

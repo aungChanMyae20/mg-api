@@ -2,6 +2,8 @@ const SeasonModel = require('../models/seasonModel')
 const AlbumModel = require('../models/albumModel')
 const CardModel = require('../models/cardModel')
 
+const { serverError } = require('../variables')
+
 const albumController = {
   getAllAlbums: async (req, res) => {
     try {
@@ -9,7 +11,7 @@ const albumController = {
       if (!data) {
         res.status(400).json({
           success: false,
-          message: 'Bad Request'
+          message: 'Album not found'
         })
       }
       const transformedData = data.map((item) => ({
@@ -26,9 +28,7 @@ const albumController = {
       })
     } catch (error) {
       console.error('Error fetching albums:', error)
-      res.status(500).json({ 
-        message: 'Server error'
-      })
+      res.status(500).json(serverError)
     }
   },
   createAlbum: async (req, res) => {
@@ -59,7 +59,7 @@ const albumController = {
       res.json(albumTag)
     } catch (error) {
       console.error('Error adding new album:', error)
-      res.status(500).json({ message: 'Server error'})
+      res.status(500).json(serverError)
     }
   },
   updateAlbum: async (req, res) => {
@@ -101,7 +101,7 @@ const albumController = {
       res.json(album)
     } catch (error) {
       console.error('Error updating album:', error)
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).json(serverError)
     }
   },
   deleteAlbum: async (req, res) => {
@@ -119,7 +119,7 @@ const albumController = {
       res.json({ message: 'Album successfully deleted'})
     } catch (error) {
       console.error('Error deleting album:', error)
-      res.status(500).json({ message: 'Internal server error' })
+      res.status(500).json(serverError)
     }
   },
   getBySeason: async (req, res) => {
@@ -164,7 +164,7 @@ const albumController = {
         data: { ...album._doc }
       })
     } catch (error) {
-      res.status(500).json({ message: 'Server error'})
+      res.status(500).json(serverError)
     }
   },
 }

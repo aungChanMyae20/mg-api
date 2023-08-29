@@ -29,6 +29,22 @@ export const getSeasons = createAsyncThunk('season/all', async (_, { rejectWithV
   }
 })
 
+export const createEvent = createAsyncThunk('event/create', async (values, { rejectWithValue }) => {
+  try {
+    console.log('values', values)
+    const response = await EventServices.saveEvent(values)
+    console.log('response', response)
+    if (response?.status === 200) {
+      const { data } = response
+      notifySuccess(data.message)
+      return data
+    }
+  } catch (error) {
+    notifyError('Server Error')
+    return rejectWithValue(error?.response?.data)
+  }
+})
+
 const eventSlice = createSlice({
   name: 'event',
   initialState,
